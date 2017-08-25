@@ -62,7 +62,7 @@ async def echo(ctx, *, echo: str = None):
 @bot.command(pass_context=True)
 async def chstat(ctx, *, activity: str = None):
     """Currently only Agent can run this command."""
-    if ctx.message.author.id == "97077596092633088":
+    if ctx.message.author.id == "ID":
         if activity is None:
             await bot.say("Looks like you forgot to include a status...")
         else:
