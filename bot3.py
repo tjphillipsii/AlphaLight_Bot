@@ -62,6 +62,7 @@ async def echo(ctx, *, echo: str = None):
 @bot.command(pass_context=True)
 async def chstat(ctx, *, activity: str = None):
     """Currently only Agent can run this command."""
+    if ctx.message.author.id == "97077596092633088":
         if activity is None:
             await bot.say("Looks like you forgot to include a status...")
         else:
@@ -87,29 +88,9 @@ async def joined(member: discord.Member = None):
 
 
 @bot.command()
-async def farm():
-    """Quickly return the ammount of time left until the farm is active
-
-    execute the command by just running !farm"""
-    farm = datetime(2017, 7, 23, 10, 00)
-    delta = farm - datetime.now()
-
-    if delta.days > 0:
-        await bot.say('The farm goes live in {}'.format(delta))
-    elif ((delta.seconds / 60) / 60) > 1:
-        await bot.say("{} Hours left till the farm is live!".format(delta.seconds / 60 / 60))
-    elif delta.seconds > (60 * 60):
-        await bot.say("{} Minutes left untill the farm goes live!".format(delta.seconds / 60))
-    elif delta.seconds >= 0:
-        await bot.say('There are {} seconds left until you can get in the farm!'.format(delta.seconds))
-    else:
-        await bot.say('The farm should be live, go check it out!')
-
-
-@bot.command()
 async def nightfall():
     """Here is the Nightfall for the week, with burns."""
-    url = 'https://www.bungie.net/Platform/Destiny/Advisors/?definitions=True'
+    url = 'https://www.bungie.net/d1/Platform/Destiny/Advisors/?definitions=True'
     async with aiohttp.get(url, headers=secrets.HEADERS) as r:
         if r.status == 200:
             rootdata = await r.json()
@@ -134,4 +115,4 @@ async def nightfall():
                              ['skulls'][item]['displayName'])
             await bot.say('The Nightfall for the week is:\n{}\nThe burns are:\n{}'.format(nightfall, '\n'.join(burns)))
 
-bot.run(secrets.TOKEN)
+bot.run(secrets.TOKEN, bot=True, reconnect=True)
